@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Titantron 4000 by SOL</title>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Bebas+Neue&display=swap"
+    rel="stylesheet"
+  />
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -946,12 +949,26 @@
         btn.type = "button";
         btn.className = "btn btn-preset" + (index === currentPreset ? " active" : "");
         btn.textContent = preset.name;
+
         btn.addEventListener("click", () => {
           currentPreset = index;
+
+          if (videoURL) {
+            try {
+              audioMaster.pause();
+              audioMaster.currentTime = 0;
+            } catch (err) {}
+          }
+
           renderPresets();
           renderScreens();
           updateInfo();
+
+          if (videoURL) {
+            syncAudioMaster();
+          }
         });
+
         presetsEl.appendChild(btn);
       });
     }
@@ -1108,13 +1125,14 @@
             event.preventDefault();
           });
 
-          if (screenConfig.delay) {
-            video.addEventListener("loadeddata", () => {
-              try {
-                video.currentTime = screenConfig.delay;
-              } catch (err) {}
-            }, { once: true });
-          }
+          video.addEventListener("loadeddata", () => {
+            try {
+              video.currentTime = screenConfig.delay || 0;
+              if (playing) {
+                video.play().catch(() => {});
+              }
+            } catch (err) {}
+          }, { once: true });
 
           if (playing) {
             video.play().catch(() => {});
@@ -1305,8 +1323,11 @@
         const x = cx + Math.cos(angle) * r;
         const y = cy + Math.sin(angle) * r;
 
-        if (i === 0) vizCtx.moveTo(x, y);
-        else vizCtx.lineTo(x, y);
+        if (i === 0) {
+          vizCtx.moveTo(x, y);
+        } else {
+          vizCtx.lineTo(x, y);
+        }
       }
 
       vizCtx.closePath();
@@ -1369,7 +1390,9 @@
       event.preventDefault();
       stageWrap.classList.remove("drag-over");
       const file = event.dataTransfer?.files?.[0];
-      if (file) await loadVideo(file);
+      if (file) {
+        await loadVideo(file);
+      }
     });
 
     pyroStageBtn.addEventListener("click", firePyro);
