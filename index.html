@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titantron 4000 by SOL</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #050508;
+    --surface: #08080f;
+    --accent: #6af;
+    --accent-dim: rgba(100,170,255,0.3);
+    --text: #fff;
+    --text-dim: rgba(255,255,255,0.35);
+    --text-ghost: rgba(255,255,255,0.15);
+    --border: rgba(255,255,255,0.06);
+    --glow: rgba(0,150,255,0.3);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Oswald', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .subtitle {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #1a3a6a, #0d1f3a);
+    border: 1px solid var(--accent-dim);
+    color: #8cf;
+    padding: 10px 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    border-radius: 4px;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #264d8a, #132a4a);
+    border-color: rgba(100,170,255,0.6);
+  }
+  .btn-play {
+    background: linear-gradient(135deg, #1a5a2a, #0d2f15);
+    border: 1px solid rgba(80,255,120,0.3);
+    color: #8f8;
+    padding: 8px 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+  .btn-play.active {
+    background: rgba(255,80,80,0.15);
+    border-color: rgba(255,80,80,0.4);
+    color: #f88;
+  }
+  .btn-pyro {
+    background: rgba(255,120,0,0.1);
+    border: 1px solid rgba(255,150,50,0.3);
+    color: #fa6;
+  }
+  .btn-toggle {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.3);
+  }
+  .btn-toggle.on {
+    background: rgba(100,170,255,0.1);
+    border-color: var(--accent-dim);
+    color: #8cf;
+  }
+  .btn-toggle.on-fog {
+    background: rgba(150,180,220,0.1);
+    border-color: rgba(150,180,220,0.3);
+    color: #acd;
+  }
+  .btn-preset {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.4);
+  }
+  .btn-preset.active {
+    background: rgba(100,170,255,0.15);
+    border-color: rgba(100,170,255,0.4);
+    color: #8cf;
+  }
+
+  /* PRESETS */
+  .presets {
+    padding: 8px 20px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  /* STAGE */
+  .stage-wrap {
+    margin: 4px 20px;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border 0.3s;
+  }
+  .stage-wrap.drag-over {
+    border: 2px dashed rgba(100,170,255,0.5);
+  }
+  .arena-bg {
+    position: absolute;
+    inset: 0;
+    transition: all 0.6s ease;
+  }
+  .arena-bg.lights-on {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 70%, rgba(10,15,40,0.9) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 30%, rgba(0,30,80,0.15) 0%, transparent 60%),
+      linear-gradient(180deg, #06060c 0%, #0a0a18 40%, #0c0c1a 100%);
+  }
+  .arena-bg.lights-off {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 70%, rgba(10,15,40,0.9) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 30%, rgba(0,30,80,0.02) 0%, transparent 60%),
+      linear-gradient(180deg, #06060c 0%, #0a0a18 40%, #0c0c1a 100%);
+  }
+  .structure-lines {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, transparent 9%, rgba(255,255,255,0.02) 9.5%, transparent 10%),
+      linear-gradient(90deg, transparent 89.5%, rgba(255,255,255,0.02) 90%, transparent 90.5%),
+      linear-gradient(0deg, transparent 64%, rgba(255,255,255,0.015) 64.5%, transparent 65%);
+  }
+
+  /* SPOTS */
+  .spot {
+    position: absolute;
+    pointer-events: none;
+    transition: opacity 0.6s;
+  }
+  .spot-left {
+    left: 20%; top: -10%; width: 20%; height: 80%;
+    background: radial-gradient(ellipse at top, rgba(100,180,255,0.06) 0%, transparent 70%);
+    transform: rotate(-8deg);
+  }
+  .spot-right {
+    right: 20%; top: -10%; width: 20%; height: 80%;
+    background: radial-gradient(ellipse at top, rgba(100,180,255,0.06) 0%, transparent 70%);
+    transform: rotate(8deg);
+  }
+  .spot-center {
+    left: 40%; top: -5%; width: 20%; height: 70%;
+    background: radial-gradient(ellipse at top, rgba(255,255,255,0.04) 0%, transparent 60%);
+  }
+
+  /* FOG */
+  .fog {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 35%;
+    background: linear-gradient(0deg, rgba(100,140,200,0.06) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.6s;
+  }
+
+  /* RAMP & ENTRANCE */
+  .stage-floor {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 55%;
+    background: linear-gradient(0deg, rgba(8,8,16,0.97) 0%, rgba(10,10,20,0.85) 30%, rgba(10,10,20,0.5) 60%, transparent 100%);
+    z-index: 7;
+  }
+  /* Gorilla position / curtain entrance */
+  .gorilla {
+    position: absolute;
+    left: 50%; top: 44%;
+    transform: translateX(-50%);
+    width: 9%; height: 10%;
+    z-index: 10;
+    border-radius: 2px 2px 0 0;
+    background: linear-gradient(180deg, #080812 0%, #0c0c1a 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-bottom: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.6);
+  }
+  /* Curtain strips */
+  .gorilla::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(20,20,50,0.9) 0px,
+      rgba(15,15,35,0.9) 2px,
+      rgba(25,25,55,0.6) 3px,
+      rgba(20,20,50,0.9) 5px
+    );
+    border-radius: 2px 2px 0 0;
+  }
+  /* Curtain glow at top */
+  .gorilla::after {
+    content: '';
+    position: absolute;
+    top: -2px; left: 10%; right: 10%; height: 3px;
+    background: rgba(100,170,255,0.2);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(100,170,255,0.3);
+  }
+  /* Entrance ramp walkway - connects to gorilla, widens toward ring */
+  .ramp {
+    position: absolute;
+    bottom: 0; left: 50%; 
+    transform: translateX(-50%);
+    width: 36%; height: 46%;
+    z-index: 7;
+    background: linear-gradient(180deg, 
+      rgba(12,12,25,0.95) 0%, 
+      rgba(16,16,32,0.85) 30%,
+      rgba(20,20,40,0.7) 60%,
+      rgba(22,22,44,0.5) 100%
+    );
+    /* Narrow at top (gorilla), wider at bottom (toward ring) */
+    clip-path: polygon(40% 0%, 60% 0%, 78% 100%, 22% 100%);
+  }
+  /* Ramp surface lines for depth */
+  .ramp::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(
+        180deg,
+        transparent 0px,
+        transparent 22px,
+        rgba(255,255,255,0.012) 22px,
+        rgba(255,255,255,0.012) 23px
+      );
+    clip-path: polygon(40% 0%, 60% 0%, 78% 100%, 22% 100%);
+  }
+  /* Ramp edge glow lines baked into the shape */
+  .ramp::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(
+      40% 0%, 60% 0%, 78% 100%, 22% 100%,
+      23% 100%, 40.5% 0%, 59.5% 0%, 77% 100%,
+      78% 100%, 60% 0%, 40% 0%, 22% 100%
+    );
+    background: rgba(100,170,255,0.06);
+  }
+  /* Ramp edge lights - built into the ramp shape */
+  .ramp-edge-left, .ramp-edge-right {
+    display: none;
+  }
+  /* Truss pillars flanking the entrance */
+  .truss {
+    position: absolute;
+    width: 4%;
+    top: 5%; height: 48%;
+    z-index: 7;
+    background: linear-gradient(180deg, 
+      rgba(30,30,50,0.9) 0%, 
+      rgba(20,20,35,0.9) 50%,
+      rgba(15,15,25,0.8) 100%
+    );
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 2px;
+  }
+  .truss::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 6px; height: 6px;
+    background: rgba(100,170,255,0.3);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(100,170,255,0.4);
+  }
+  .truss::after {
+    content: '';
+    position: absolute;
+    inset: 8px 3px;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(255,255,255,0.03) 8px,
+      rgba(255,255,255,0.03) 9px
+    );
+  }
+  .truss-left { left: 27%; }
+  .truss-right { right: 27%; }
+  /* Stage edge / apron at the very bottom */
+  .stage-apron {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 4%;
+    background: linear-gradient(0deg, rgba(20,20,40,1) 0%, rgba(15,15,30,0.9) 100%);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    z-index: 8;
+  }
+  .stage-apron::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(100,170,255,0.1), transparent);
+  }
+
+  /* SCREEN */
+  .screen {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 2px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+    background: #0a0a0f;
+    transition: box-shadow 0.4s ease;
+  }
+  .screen.playing {
+    box-shadow: 0 0 30px var(--glow), 0 0 60px rgba(0,100,255,0.1), inset 0 0 20px rgba(0,0,0,0.5);
+  }
+  .screen.framed {
+    border: 4px solid #1a1a2a;
+    border-image: linear-gradient(
+      180deg,
+      rgba(80,85,100,0.8) 0%,
+      rgba(45,48,60,0.9) 20%,
+      rgba(60,63,75,0.7) 40%,
+      rgba(35,38,48,0.9) 60%,
+      rgba(55,58,70,0.7) 80%,
+      rgba(40,43,55,0.9) 100%
+    ) 1;
+    box-shadow: 
+      inset 0 0 30px rgba(0,0,0,0.8),
+      0 2px 8px rgba(0,0,0,0.6),
+      0 0 1px rgba(255,255,255,0.1);
+  }
+  .screen.framed.playing {
+    box-shadow: 
+      0 0 30px var(--glow), 
+      0 0 60px rgba(0,100,255,0.1), 
+      inset 0 0 20px rgba(0,0,0,0.5),
+      0 2px 8px rgba(0,0,0,0.6),
+      0 0 1px rgba(255,255,255,0.1);
+  }
+  /* Outer metal bezel via wrapper */
+  .screen-frame-outer {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 3px;
+    padding: 3px;
+    background: linear-gradient(
+      135deg,
+      rgba(70,73,85,0.6) 0%,
+      rgba(40,42,52,0.8) 25%,
+      rgba(60,63,75,0.5) 50%,
+      rgba(35,38,48,0.8) 75%,
+      rgba(55,58,68,0.6) 100%
+    );
+    box-shadow: 0 3px 12px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .screen video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .screen-label {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a1a 0%, #0f0f2a 100%);
+    color: var(--text-ghost);
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .screen-label.lg { font-size: 11px; }
+
+  /* DROP ZONE */
+  .drop-zone {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    cursor: pointer;
+  }
+  .drop-zone p { letter-spacing: 3px; text-transform: uppercase; font-weight: 300; }
+  .drop-zone .main-text { font-size: 14px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+  .drop-zone .sub-text { font-size: 11px; color: var(--text-ghost); }
+
+  /* PYRO */
+  @keyframes pyro-burst {
+    0% { height: 0%; opacity: 1; }
+    40% { height: 35%; opacity: 1; }
+    100% { height: 40%; opacity: 0; }
+  }
+  @keyframes pyro-ramp-burst {
+    0% { height: 0px; opacity: 1; }
+    30% { height: 20px; opacity: 1; }
+    100% { height: 28px; opacity: 0; }
+  }
+  .pyro-col {
+    position: absolute;
+    bottom: 45%;
+    width: 4px;
+    height: 0%;
+    background: linear-gradient(0deg, #f80, #ff0, #fff);
+    z-index: 20;
+    border-radius: 2px;
+    box-shadow: 0 0 20px #f80, 0 0 40px #f60;
+    transform-origin: bottom;
+    opacity: 0;
+  }
+  .pyro-col.fire {
+    animation: pyro-burst 0.8s ease-out forwards;
+  }
+  .pyro-ramp {
+    position: absolute;
+    width: 3px;
+    height: 0px;
+    background: linear-gradient(0deg, #f80, #ff0, #fff);
+    z-index: 20;
+    border-radius: 2px;
+    box-shadow: 0 0 12px #f80, 0 0 24px #f60;
+    transform-origin: bottom;
+    opacity: 0;
+  }
+  .pyro-ramp.fire {
+    animation: pyro-ramp-burst 0.6s ease-out forwards;
+  }
+
+  /* CONTROLS */
+  .controls {
+    padding: 8px 20px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* INFO */
+  .info {
+    padding: 4px 20px 8px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+  .status { color: rgba(255,200,80,0.5); }
+  .status.ok { color: rgba(80,255,120,0.5); }
+
+  /* VISUALIZER */
+  #vizCanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 75%;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  #vizCanvas.active { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>TITANTRON 4000</h1>
+    <p class="subtitle">by SOL</p>
+  </div>
+  <button class="btn btn-primary" id="loadBtn" onclick="document.getElementById('fileInput').click()">Load Video</button>
+  <input type="file" id="fileInput" accept="video/*" style="display:none">
+</div>
+
+<div class="presets" id="presets"></div>
+
+<div class="stage-wrap" id="stageWrap">
+  <div class="arena-bg lights-on" id="arenaBg"></div>
+  <div class="structure-lines"></div>
+  <div class="spot spot-left" id="spotL"></div>
+  <div class="spot spot-right" id="spotR"></div>
+  <div class="spot spot-center" id="spotC"></div>
+  <div class="fog" id="fogLayer"></div>
+  <canvas id="vizCanvas"></canvas>
+  <div id="screensContainer"></div>
+  <div class="stage-floor"></div>
+  <div class="truss truss-left"></div>
+  <div class="truss truss-right"></div>
+  <div class="gorilla"></div>
+  <div class="ramp"></div>
+  <div class="ramp-edge-left"></div>
+  <div class="ramp-edge-right"></div>
+  <div class="stage-apron"></div>
+  <div class="drop-zone" id="dropZone">
+    <p class="main-text">Click here or drag a video file</p>
+    <p class="sub-text">MP4, WebM, MOV</p>
+  </div>
+  <!-- Pyro columns (stage) -->
+  <div class="pyro-col" style="left:23%"></div>
+  <div class="pyro-col" style="left:36%"></div>
+  <div class="pyro-col" style="left:50%"></div>
+  <div class="pyro-col" style="left:64%"></div>
+  <div class="pyro-col" style="left:77%"></div>
+  <!-- Pyro ramp (left edge) -->
+  <div class="pyro-ramp" style="left:46%;top:57%"></div>
+  <div class="pyro-ramp" style="left:44.5%;top:64%"></div>
+  <div class="pyro-ramp" style="left:43%;top:71%"></div>
+  <div class="pyro-ramp" style="left:41.5%;top:78%"></div>
+  <div class="pyro-ramp" style="left:40%;top:85%"></div>
+  <!-- Pyro ramp (right edge) -->
+  <div class="pyro-ramp" style="left:54%;top:57%"></div>
+  <div class="pyro-ramp" style="left:55.5%;top:64%"></div>
+  <div class="pyro-ramp" style="left:57%;top:71%"></div>
+  <div class="pyro-ramp" style="left:58.5%;top:78%"></div>
+  <div class="pyro-ramp" style="left:60%;top:85%"></div>
+</div>
+
+<div class="controls" id="controls">
+  <button class="btn btn-pyro" onclick="firePyro()">Pyro Stage</button>
+  <button class="btn btn-pyro" onclick="firePyroRamp()">Pyro Ramp</button>
+  <button class="btn btn-toggle on" id="lightsBtn" onclick="toggleLights()">Lights On</button>
+  <button class="btn btn-toggle on-fog" id="fogBtn" onclick="toggleFog()">Fog On</button>
+  <button class="btn btn-toggle on" id="muteBtn" onclick="toggleMute()" style="background:rgba(80,200,120,0.1);border-color:rgba(80,200,120,0.3);color:#8f8">Audio On</button>
+  <button class="btn btn-toggle" id="vizBtn" onclick="toggleVisualizer()">Visualizer</button>
+</div>
+
+<div class="info">
+  <span id="stageInfo"></span><br>
+  <span class="status" id="statusText">No video loaded</span>
+</div>
+
+<script>
+const PRESETS = [
+  {
+    name: "Classic",
+    screens: [
+      { id: "main", x: 50, y: 28, w: 38, h: 44, label: "Main Tron", frame: true, z: 8 },
+    ],
+  },
+  {
+    name: "PPV",
+    screens: [
+      { id: "main", x: 50, y: 24, w: 38, h: 40, label: "Center", z: 8, frame: true },
+      { id: "tl", x: 29, y: 10, w: 14, h: 8, label: "Top Left", z: 9, delay: 5 },
+      { id: "tr", x: 71, y: 10, w: 14, h: 8, label: "Top Right", z: 9, delay: 5 },
+      { id: "bl", x: 29, y: 40, w: 14, h: 8, label: "Bot Left", z: 9, delay: 5 },
+      { id: "br", x: 71, y: 40, w: 14, h: 8, label: "Bot Right", z: 9, delay: 5 },
+    ],
+  },
+  {
+    name: "Vertical",
+    screens: [
+      { id: "main", x: 50, y: 24, w: 38, h: 40, label: "Main", frame: true, z: 8 },
+      { id: "ramp1", x: 38, y: 48, w: 10, h: 6, label: "Left", z: 8 },
+      { id: "ramp3", x: 62, y: 48, w: 10, h: 6, label: "Right", z: 8 },
+      { id: "left", x: 29, y: 29, w: 4, h: 48, label: "L Pillar", z: 9, delay: 3 },
+      { id: "right", x: 71, y: 29, w: 4, h: 48, label: "R Pillar", z: 9, delay: 3 },
+    ],
+  },
+  {
+    name: "Videodrome",
+    screens: [
+      { id: "main", x: 50, y: 24, w: 38, h: 40, label: "Main", z: 8, frame: true },
+      { id: "l1", x: 29, y: 12, w: 8, h: 10, label: "", z: 8 },
+      { id: "l2", x: 29, y: 25, w: 8, h: 10, label: "", z: 8 },
+      { id: "l3", x: 29, y: 38, w: 8, h: 10, label: "", z: 8 },
+      { id: "r1", x: 71, y: 12, w: 8, h: 10, label: "", z: 8 },
+      { id: "r2", x: 71, y: 25, w: 8, h: 10, label: "", z: 8 },
+      { id: "r3", x: 71, y: 38, w: 8, h: 10, label: "", z: 8 },
+      { id: "t1", x: 38, y: 6, w: 10, h: 7, label: "", z: 9 },
+      { id: "t2", x: 62, y: 6, w: 10, h: 7, label: "", z: 9 },
+      { id: "b1", x: 38, y: 42, w: 10, h: 7, label: "", z: 9 },
+      { id: "b2", x: 62, y: 42, w: 10, h: 7, label: "", z: 9 },
+    ],
+  },
+  {
+    name: "3x3",
+    screens: [
+      { id: "g1", x: 37.5, y: 10, w: 12.5, h: 14, label: "", delay: 0, z: 8 },
+      { id: "g2", x: 50,   y: 10, w: 12.5, h: 14, label: "", delay: 0.1, z: 8 },
+      { id: "g3", x: 62.5, y: 10, w: 12.5, h: 14, label: "", delay: 0.2, z: 8 },
+      { id: "g4", x: 37.5, y: 24, w: 12.5, h: 14, label: "", delay: 0.3, z: 8 },
+      { id: "main", x: 50,   y: 24, w: 12.5, h: 14, label: "", delay: 0.4, z: 8 },
+      { id: "g6", x: 62.5, y: 24, w: 12.5, h: 14, label: "", delay: 0.5, z: 8 },
+      { id: "g7", x: 37.5, y: 38, w: 12.5, h: 14, label: "", delay: 0.6, z: 8 },
+      { id: "g8", x: 50,   y: 38, w: 12.5, h: 14, label: "", delay: 0.7, z: 8 },
+      { id: "g9", x: 62.5, y: 38, w: 12.5, h: 14, label: "", delay: 0.8, z: 8 },
+    ],
+  },
+  {
+    name: "3x3 Stagger",
+    screens: [
+      { id: "g1", x: 37.5, y: 10, w: 12.5, h: 14, label: "", delay: 0, z: 8 },
+      { id: "g2", x: 50,   y: 10, w: 12.5, h: 14, label: "", delay: 3, z: 8 },
+      { id: "g3", x: 62.5, y: 10, w: 12.5, h: 14, label: "", delay: 6, z: 8 },
+      { id: "g4", x: 37.5, y: 24, w: 12.5, h: 14, label: "", delay: 9, z: 8 },
+      { id: "main", x: 50,   y: 24, w: 12.5, h: 14, label: "", delay: 12, z: 8 },
+      { id: "g6", x: 62.5, y: 24, w: 12.5, h: 14, label: "", delay: 15, z: 8 },
+      { id: "g7", x: 37.5, y: 38, w: 12.5, h: 14, label: "", delay: 18, z: 8 },
+      { id: "g8", x: 50,   y: 38, w: 12.5, h: 14, label: "", delay: 21, z: 8 },
+      { id: "g9", x: 62.5, y: 38, w: 12.5, h: 14, label: "", delay: 24, z: 8 },
+    ],
+  },
+];
+
+let currentPreset = 0;
+let videoURL = null;
+let playing = false;
+let lightsOn = true;
+let fogOn = true;
+let audioOn = true;
+let vizOn = false;
+let connectedVid = null;
+
+// --- PRESETS ---
+const presetsEl = document.getElementById("presets");
+function renderPresets() {
+  presetsEl.innerHTML = "";
+  PRESETS.forEach((p, i) => {
+    const btn = document.createElement("button");
+    btn.className = "btn btn-preset" + (i === currentPreset ? " active" : "");
+    btn.textContent = p.name;
+    btn.onclick = () => { currentPreset = i; renderPresets(); renderScreens(); updateInfo(); };
+    presetsEl.appendChild(btn);
+  });
+}
+
+// --- SCREENS ---
+const container = document.getElementById("screensContainer");
+function renderScreens() {
+  container.innerHTML = "";
+  const preset = PRESETS[currentPreset];
+  preset.screens.forEach((s) => {
+    // If framed, create an outer bezel wrapper
+    let wrapper = null;
+    if (s.frame) {
+      wrapper = document.createElement("div");
+      wrapper.className = "screen-frame-outer";
+      wrapper.style.cssText = `
+        left: ${s.x - s.w/2 - 0.4}%;
+        top: ${s.y - s.h/2 - 0.6}%;
+        width: ${s.w + 0.8}%;
+        height: ${s.h + 1.2}%;
+        z-index: ${s.z || (s.id === "main" ? 3 : 2)};
+      `;
+    }
+
+    const div = document.createElement("div");
+    div.className = "screen" + (playing ? " playing" : "") + (s.frame ? " framed" : "");
+    
+    if (s.frame) {
+      // Inside the wrapper, screen fills it
+      div.style.cssText = `
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+      `;
+    } else {
+      div.style.cssText = `
+        left: ${s.x - s.w/2}%;
+        top: ${s.y - s.h/2}%;
+        width: ${s.w}%;
+        height: ${s.h}%;
+        z-index: ${s.z || (s.id === "main" ? 3 : 2)};
+      `;
+    }
+
+    if (videoURL) {
+      const vid = document.createElement("video");
+      vid.src = videoURL;
+      vid.loop = true;
+      vid.muted = !(s.id === "main" && audioOn); // only main screen has audio when audioOn
+      vid.playsInline = true;
+      vid.autoplay = playing;
+      // Apply time offset for staggered screens
+      if (s.delay) {
+        vid.addEventListener("loadeddata", () => {
+          vid.currentTime = s.delay;
+        }, { once: true });
+      }
+      if (s.id === "main" && audioOn) {
+        vid.play().catch(() => {
+          vid.muted = true;
+          vid.play().catch(() => {});
+        });
+      } else if (playing) {
+        vid.play().catch(() => {});
+      }
+      div.appendChild(vid);
+    } else {
+      const label = document.createElement("div");
+      label.className = "screen-label" + (s.w > 20 ? " lg" : "");
+      label.textContent = s.label || "SCREEN";
+      div.appendChild(label);
+    }
+    
+    if (wrapper) {
+      wrapper.appendChild(div);
+      container.appendChild(wrapper);
+    } else {
+      container.appendChild(div);
+    }
+  });
+  // Reconnect visualizer if active
+  if (vizOn && videoURL) setTimeout(connectAudio, 200);
+}
+
+// --- FILE INPUT ---
+const fileInput = document.getElementById("fileInput");
+const loadBtn = document.getElementById("loadBtn");
+const statusText = document.getElementById("statusText");
+const dropZone = document.getElementById("dropZone");
+const stageWrap = document.getElementById("stageWrap");
+
+function loadVideo(file) {
+  if (!file) return;
+  setStatus(`Loading: ${file.name}...`, false);
+  if (videoURL) URL.revokeObjectURL(videoURL);
+  videoURL = URL.createObjectURL(file);
+  playing = true;
+  connectedVid = null; // reset so visualizer reconnects
+  loadBtn.textContent = "Change Video";
+  dropZone.style.display = "none";
+  setStatus(`Playing: ${file.name}`, true);
+  renderScreens();
+  updatePlayBtn();
+}
+
+fileInput.addEventListener("change", (e) => {
+  loadVideo(e.target.files[0]);
+  fileInput.value = "";
+});
+
+// Drop zone click
+dropZone.addEventListener("click", () => fileInput.click());
+
+// Drag and drop on the whole stage
+stageWrap.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  stageWrap.classList.add("drag-over");
+});
+stageWrap.addEventListener("dragleave", () => stageWrap.classList.remove("drag-over"));
+stageWrap.addEventListener("drop", (e) => {
+  e.preventDefault();
+  stageWrap.classList.remove("drag-over");
+  const file = e.dataTransfer?.files?.[0];
+  if (file) loadVideo(file);
+});
+
+// --- PLAY/PAUSE ---
+function togglePlay() {
+  if (!videoURL) return;
+  playing = !playing;
+  renderScreens();
+  updatePlayBtn();
+  setStatus(playing ? "Playing" : "Paused", !!videoURL);
+}
+
+function updatePlayBtn() {
+  let btn = document.getElementById("playBtn");
+  if (!videoURL) {
+    if (btn) btn.remove();
+    return;
+  }
+  if (!btn) {
+    btn = document.createElement("button");
+    btn.id = "playBtn";
+    btn.onclick = togglePlay;
+    const controls = document.getElementById("controls");
+    controls.insertBefore(btn, controls.firstChild);
+  }
+  btn.className = "btn btn-play" + (playing ? " active" : "");
+  btn.textContent = playing ? "Pause" : "Play Entrance";
+}
+
+// --- PYRO ---
+function firePyro() {
+  const cols = document.querySelectorAll(".pyro-col");
+  cols.forEach((col, i) => {
+    col.classList.remove("fire");
+    col.style.animationDelay = `${i * 0.1}s`;
+    void col.offsetWidth;
+    col.classList.add("fire");
+  });
+  setTimeout(() => cols.forEach(c => c.classList.remove("fire")), 2500);
+}
+
+function firePyroRamp() {
+  const ramps = document.querySelectorAll(".pyro-ramp");
+  // Fire in pairs (left + right at same height), cascading down the ramp
+  ramps.forEach((r, i) => {
+    r.classList.remove("fire");
+    // Pairs: 0&5, 1&6, 2&7, 3&8, 4&9 fire together
+    const pairIndex = i % 5;
+    r.style.animationDelay = `${pairIndex * 0.15}s`;
+    void r.offsetWidth;
+    r.classList.add("fire");
+  });
+  setTimeout(() => ramps.forEach(r => r.classList.remove("fire")), 2500);
+}
+
+// --- LIGHTS ---
+function toggleLights() {
+  lightsOn = !lightsOn;
+  const bg = document.getElementById("arenaBg");
+  bg.className = "arena-bg " + (lightsOn ? "lights-on" : "lights-off");
+  const spots = [document.getElementById("spotL"), document.getElementById("spotR"), document.getElementById("spotC")];
+  spots.forEach(s => s.style.opacity = lightsOn ? "1" : "0");
+  const btn = document.getElementById("lightsBtn");
+  btn.className = "btn btn-toggle" + (lightsOn ? " on" : "");
+  btn.textContent = lightsOn ? "Lights On" : "Lights Off";
+}
+
+// --- FOG ---
+function toggleFog() {
+  fogOn = !fogOn;
+  document.getElementById("fogLayer").style.opacity = fogOn ? "1" : "0";
+  const btn = document.getElementById("fogBtn");
+  btn.className = "btn btn-toggle" + (fogOn ? " on-fog" : "");
+  btn.textContent = fogOn ? "Fog On" : "Fog Off";
+}
+
+// --- AUDIO ---
+function toggleMute() {
+  audioOn = !audioOn;
+  const btn = document.getElementById("muteBtn");
+  if (audioOn) {
+    btn.style.background = "rgba(80,200,120,0.1)";
+    btn.style.borderColor = "rgba(80,200,120,0.3)";
+    btn.style.color = "#8f8";
+    btn.textContent = "Audio On";
+  } else {
+    btn.style.background = "rgba(255,255,255,0.04)";
+    btn.style.borderColor = "rgba(255,255,255,0.1)";
+    btn.style.color = "rgba(255,255,255,0.3)";
+    btn.textContent = "Audio Off";
+  }
+  // Update existing video elements without full re-render
+  const vids = container.querySelectorAll("video");
+  const screens = PRESETS[currentPreset].screens;
+  vids.forEach((vid, i) => {
+    if (screens[i] && screens[i].id === "main") {
+      vid.muted = !audioOn;
+    }
+  });
+}
+
+// --- STATUS ---
+function setStatus(text, ok) {
+  statusText.textContent = text;
+  statusText.className = "status" + (ok ? " ok" : "");
+}
+
+function updateInfo() {
+  const p = PRESETS[currentPreset];
+  document.getElementById("stageInfo").textContent = `Stage: ${p.name} / ${p.screens.length} screens`;
+}
+
+// --- INIT ---
+renderPresets();
+renderScreens();
+updateInfo();
+updatePlayBtn();
+
+// --- VISUALIZER ---
+let audioCtx = null;
+let analyser = null;
+let vizAnimId = null;
+const vizCanvas = document.getElementById("vizCanvas");
+const vizCtx = vizCanvas.getContext("2d");
+
+function toggleVisualizer() {
+  vizOn = !vizOn;
+  const btn = document.getElementById("vizBtn");
+  if (vizOn) {
+    btn.className = "btn btn-toggle on";
+    btn.style.background = "rgba(200,80,255,0.15)";
+    btn.style.borderColor = "rgba(200,80,255,0.4)";
+    btn.style.color = "#c8f";
+    btn.textContent = "Visualizer On";
+    vizCanvas.classList.add("active");
+    startVisualizer();
+  } else {
+    btn.className = "btn btn-toggle";
+    btn.style.background = "";
+    btn.style.borderColor = "";
+    btn.style.color = "";
+    btn.textContent = "Visualizer";
+    vizCanvas.classList.remove("active");
+    stopVisualizer();
+  }
+}
+
+function connectAudio() {
+  // Find the main (unmuted) video
+  const vids = container.querySelectorAll("video");
+  const preset = PRESETS[currentPreset];
+  let mainVid = null;
+  vids.forEach((v, i) => {
+    if (preset.screens[i] && preset.screens[i].id === "main") mainVid = v;
+  });
+  if (!mainVid) mainVid = vids[0];
+  if (!mainVid || mainVid === connectedVid) return;
+
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.8;
+    analyser.connect(audioCtx.destination);
+  }
+
+  try {
+    const source = audioCtx.createMediaElementSource(mainVid);
+    source.connect(analyser);
+    connectedVid = mainVid;
+  } catch(e) {
+    // Already connected or error
+  }
+}
+
+function startVisualizer() {
+  connectAudio();
+  drawViz();
+}
+
+function stopVisualizer() {
+  if (vizAnimId) cancelAnimationFrame(vizAnimId);
+  vizAnimId = null;
+  vizCtx.clearRect(0, 0, vizCanvas.width, vizCanvas.height);
+}
+
+function drawViz() {
+  if (!vizOn) return;
+  vizAnimId = requestAnimationFrame(drawViz);
+
+  // Resize canvas to actual pixel size
+  const rect = vizCanvas.getBoundingClientRect();
+  if (vizCanvas.width !== rect.width || vizCanvas.height !== rect.height) {
+    vizCanvas.width = rect.width;
+    vizCanvas.height = rect.height;
+  }
+
+  const W = vizCanvas.width;
+  const H = vizCanvas.height;
+  vizCtx.clearRect(0, 0, W, H);
+
+  if (!analyser) { connectAudio(); return; }
+
+  const bufLen = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufLen);
+  analyser.getByteFrequencyData(dataArray);
+
+  // Average energy for glow intensity
+  let avg = 0;
+  for (let i = 0; i < bufLen; i++) avg += dataArray[i];
+  avg /= bufLen;
+  const energy = avg / 255;
+
+  const cx = W * 0.5;
+  const cy = H * 0.5;
+
+  // --- Radial burst bars (mirrored for symmetry) ---
+  const barCount = 80;
+  const innerR = Math.min(W, H) * 0.05;
+  const maxR = Math.max(W * 0.48, H * 0.48);
+  const usableBins = Math.floor(bufLen * 0.7); // skip empty high freqs
+  const halfBars = barCount / 2;
+
+  for (let i = 0; i < barCount; i++) {
+    const angle = (i / barCount) * Math.PI * 2 - Math.PI / 2;
+    // Mirror: first half maps forward, second half mirrors back
+    const mirrorIdx = i < halfBars ? i : barCount - i;
+    const freqIdx = Math.floor((mirrorIdx / halfBars) * usableBins);
+    const val = (dataArray[freqIdx] / 255) * 0.7; // 30% less intense
+
+    const barLen = val * (maxR - innerR);
+    const x1 = cx + Math.cos(angle) * innerR;
+    const y1 = cy + Math.sin(angle) * innerR;
+    const x2 = cx + Math.cos(angle) * (innerR + barLen);
+    const y2 = cy + Math.sin(angle) * (innerR + barLen);
+
+    // Color: bass=magenta, mids=cyan, highs=blue
+    const hue = 260 + (i / barCount) * 120;
+    vizCtx.strokeStyle = `hsla(${hue}, 80%, 60%, ${0.2 + val * 0.35})`;
+    vizCtx.lineWidth = Math.max(2, (W / barCount) * 0.6);
+    vizCtx.beginPath();
+    vizCtx.moveTo(x1, y1);
+    vizCtx.lineTo(x2, y2);
+    vizCtx.stroke();
+  }
+
+  // --- Center glow pulse ---
+  const glowR = innerR + energy * maxR * 0.3;
+  const grd = vizCtx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
+  grd.addColorStop(0, `rgba(180, 100, 255, ${energy * 0.15})`);
+  grd.addColorStop(0.5, `rgba(100, 150, 255, ${energy * 0.06})`);
+  grd.addColorStop(1, "rgba(0, 0, 0, 0)");
+  vizCtx.fillStyle = grd;
+  vizCtx.fillRect(0, 0, W, H);
+
+  // --- Waveform ring ---
+  const waveData = new Uint8Array(bufLen);
+  analyser.getByteTimeDomainData(waveData);
+  const waveR = innerR * 1.5 + energy * 20;
+
+  vizCtx.strokeStyle = `rgba(150, 200, 255, ${0.1 + energy * 0.2})`;
+  vizCtx.lineWidth = 1.5;
+  vizCtx.beginPath();
+  for (let i = 0; i < bufLen; i++) {
+    const angle = (i / bufLen) * Math.PI * 2;
+    const waveVal = (waveData[i] - 128) / 128;
+    const r = waveR + waveVal * 30;
+    const x = cx + Math.cos(angle) * r;
+    const y = cy + Math.sin(angle) * r;
+    if (i === 0) vizCtx.moveTo(x, y); else vizCtx.lineTo(x, y);
+  }
+  vizCtx.closePath();
+  vizCtx.stroke();
+}
+</script>
+</body>
+</html>
