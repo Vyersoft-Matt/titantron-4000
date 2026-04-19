@@ -313,8 +313,8 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 55%;
-      background: linear-gradient(0deg, rgba(8,8,16,0.97) 0%, rgba(10,10,20,0.85) 30%, rgba(10,10,20,0.5) 60%, transparent 100%);
+      height: 42%;
+      background: linear-gradient(0deg, rgba(8,8,16,0.97) 0%, rgba(10,10,20,0.85) 28%, rgba(10,10,20,0.42) 56%, transparent 100%);
       z-index: 7;
       pointer-events: none;
     }
@@ -322,10 +322,10 @@
     .gorilla {
       position: absolute;
       left: 50%;
-      top: 44%;
+      top: 49%;
       transform: translateX(-50%);
-      width: 9%;
-      height: 10%;
+      width: 8%;
+      height: 8%;
       z-index: 10;
       border-radius: 2px 2px 0 0;
       background: linear-gradient(180deg, #080812 0%, #0c0c1a 100%);
@@ -366,11 +366,11 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 36%;
-      height: 46%;
+      width: 28%;
+      height: 32%;
       z-index: 7;
-      background: linear-gradient(180deg, rgba(12,12,25,0.95) 0%, rgba(16,16,32,0.85) 30%, rgba(20,20,40,0.7) 60%, rgba(22,22,44,0.5) 100%);
-      clip-path: polygon(40% 0%, 60% 0%, 78% 100%, 22% 100%);
+      background: linear-gradient(180deg, rgba(12,12,25,0.95) 0%, rgba(16,16,32,0.82) 30%, rgba(20,20,40,0.62) 60%, rgba(22,22,44,0.42) 100%);
+      clip-path: polygon(42% 0%, 58% 0%, 76% 100%, 24% 100%);
       pointer-events: none;
     }
 
@@ -396,9 +396,9 @@
 
     .truss {
       position: absolute;
-      width: 4%;
-      top: 5%;
-      height: 48%;
+      width: 3%;
+      top: 12%;
+      height: 34%;
       z-index: 7;
       background: linear-gradient(180deg, rgba(30,30,50,0.9) 0%, rgba(20,20,35,0.9) 50%, rgba(15,15,25,0.8) 100%);
       border: 1px solid rgba(255,255,255,0.05);
@@ -426,8 +426,8 @@
       background: repeating-linear-gradient(0deg, transparent 0px, transparent 8px, rgba(255,255,255,0.03) 8px, rgba(255,255,255,0.03) 9px);
     }
 
-    .truss-left { left: 27%; }
-    .truss-right { right: 27%; }
+    .truss-left { left: 30%; }
+    .truss-right { right: 30%; }
 
     .stage-apron {
       position: absolute;
@@ -845,11 +845,23 @@
       {
         name: "Vertical",
         screens: [
-          { id: "main", x: 50, y: 24, w: 38, h: 40, label: "Main", frame: true, z: 8 },
-          { id: "ramp1", x: 38, y: 48, w: 10, h: 6, label: "Left", z: 8 },
-          { id: "ramp3", x: 62, y: 48, w: 10, h: 6, label: "Right", z: 8 },
-          { id: "left", x: 29, y: 29, w: 4, h: 48, label: "L Pillar", z: 9, delay: 3 },
-          { id: "right", x: 71, y: 29, w: 4, h: 48, label: "R Pillar", z: 9, delay: 3 }
+          { id: "main", x: 50, y: 21, w: 38, h: 25, label: "Main", frame: true, z: 10 },
+          { id: "ramp1", x: 39, y: 37, w: 10, h: 6, label: "Left", z: 9 },
+          { id: "ramp3", x: 61, y: 37, w: 10, h: 6, label: "Right", z: 9 },
+          { id: "left", x: 31, y: 31, w: 5, h: 34, label: "L Pillar", z: 9, delay: 3 },
+          { id: "right", x: 69, y: 31, w: 5, h: 34, label: "R Pillar", z: 9, delay: 3 }
+        ]
+      },
+      {
+        name: "Roman",
+        screens: [
+          { id: "main", x: 50, y: 19, w: 40, h: 24, label: "Forum", frame: true, z: 10 },
+          { id: "l1", x: 24, y: 31, w: 6, h: 30, label: "", z: 9 },
+          { id: "l2", x: 32, y: 31, w: 6, h: 30, label: "", z: 9 },
+          { id: "l3", x: 40, y: 31, w: 6, h: 30, label: "", z: 9 },
+          { id: "r1", x: 60, y: 31, w: 6, h: 30, label: "", z: 9 },
+          { id: "r2", x: 68, y: 31, w: 6, h: 30, label: "", z: 9 },
+          { id: "r3", x: 76, y: 31, w: 6, h: 30, label: "", z: 9 }
         ]
       },
       {
