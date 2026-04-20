@@ -89,7 +89,12 @@
     font-size: 13px;
     letter-spacing: 2px;
   }
-  .btn-play.active {
+  .btn-play:disabled {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.2);
+    cursor: default;
+  }
     background: rgba(255,80,80,0.15);
     border-color: rgba(255,80,80,0.4);
     color: #f88;
@@ -213,7 +218,6 @@
     background: linear-gradient(0deg, rgba(8,8,16,0.97) 0%, rgba(10,10,20,0.85) 30%, rgba(10,10,20,0.5) 60%, transparent 100%);
     z-index: 7;
   }
-  /* Gorilla platform - spans truss to truss */
   .gorilla-platform {
     position: absolute;
     left: 27%; top: 52%;
@@ -224,7 +228,6 @@
     border-bottom: none;
     border-radius: 2px 2px 0 0;
   }
-  /* Gorilla position / curtain entrance */
   .gorilla {
     position: absolute;
     left: 50%; top: 43%;
@@ -237,7 +240,6 @@
     border-bottom: none;
     box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.6);
   }
-  /* Curtain strips */
   .gorilla::before {
     content: '';
     position: absolute;
@@ -251,7 +253,6 @@
     );
     border-radius: 2px 2px 0 0;
   }
-  /* Curtain glow at top */
   .gorilla::after {
     content: '';
     position: absolute;
@@ -260,7 +261,6 @@
     border-radius: 2px;
     box-shadow: 0 0 8px rgba(100,170,255,0.3);
   }
-  /* Entrance ramp walkway - connects to gorilla, widens toward ring */
   .ramp {
     position: absolute;
     bottom: 0; left: 50%; 
@@ -273,10 +273,8 @@
       rgba(20,20,40,0.7) 60%,
       rgba(22,22,44,0.5) 100%
     );
-    /* Narrow at top (gorilla), wider at bottom (toward ring) */
     clip-path: polygon(40% 0%, 60% 0%, 78% 100%, 22% 100%);
   }
-  /* Ramp surface lines for depth */
   .ramp::before {
     content: '';
     position: absolute;
@@ -291,7 +289,6 @@
       );
     clip-path: polygon(40% 0%, 60% 0%, 78% 100%, 22% 100%);
   }
-  /* Ramp edge glow lines baked into the shape */
   .ramp::after {
     content: '';
     position: absolute;
@@ -303,11 +300,9 @@
     );
     background: rgba(100,170,255,0.06);
   }
-  /* Ramp edge lights - built into the ramp shape */
   .ramp-edge-left, .ramp-edge-right {
     display: none;
   }
-  /* Truss pillars flanking the entrance */
   .truss {
     position: absolute;
     width: 4%;
@@ -344,7 +339,6 @@
   }
   .truss-left { left: 27%; }
   .truss-right { right: 27%; }
-  /* Stage edge / apron at the very bottom */
   .stage-apron {
     position: absolute;
     bottom: 0; left: 0; right: 0; height: 4%;
@@ -396,7 +390,6 @@
       0 2px 8px rgba(0,0,0,0.6),
       0 0 1px rgba(255,255,255,0.1);
   }
-  /* Outer metal bezel via wrapper */
   .screen-frame-outer {
     position: absolute;
     overflow: hidden;
@@ -509,7 +502,117 @@
   .status { color: rgba(255,200,80,0.5); }
   .status.ok { color: rgba(80,255,120,0.5); }
 
-  /* VISUALIZER */
+  /* VERSION TOOLTIP */
+  .version-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .version-hint {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.3);
+    font-size: 9px;
+    cursor: default;
+    font-family: 'Oswald', sans-serif;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .version-hint:hover { border-color: var(--accent-dim); color: #8cf; }
+  .version-tooltip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: #0d0d1a;
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    padding: 8px 12px;
+    white-space: nowrap;
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    z-index: 100;
+  }
+  .version-tooltip strong { color: #8cf; display: block; margin-bottom: 3px; }
+  .version-hint:hover + .version-tooltip,
+  .version-tooltip:hover { display: block; }
+
+  /* KEYBOARD HINT */
+  .kbd-hint {
+    font-size: 10px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 1px;
+    align-self: center;
+    margin-left: 4px;
+  }
+  /* SOLO MODE */
+  .screen.soloed {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 30 !important;
+    border-radius: 0 !important;
+    cursor: zoom-out;
+    transition: all 0.25s ease;
+  }
+  .screen-frame-outer.soloed {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 30 !important;
+    border-radius: 0 !important;
+    padding: 0;
+    transition: all 0.25s ease;
+  }
+  .screen:not(.soloed) { cursor: zoom-in; }
+  .solo-hint {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    pointer-events: none;
+    z-index: 35;
+    font-family: 'Oswald', sans-serif;
+  }
+
+  /* FULLSCREEN BUTTON */
+  .btn-fullscreen {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 50;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.35);
+    padding: 5px 9px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .btn-fullscreen:hover {
+    background: rgba(100,170,255,0.1);
+    border-color: var(--accent-dim);
+    color: #8cf;
+  }
+
   #vizCanvas {
     position: absolute;
     left: 0;
@@ -529,13 +632,26 @@
 <div class="header">
   <div>
     <h1>TITANTRON 4000</h1>
-    <p class="subtitle">by SOL</p>
+    <div class="version-wrap">
+      <p class="subtitle">by SOL &nbsp;&middot;&nbsp; v0.2.2</p>
+      <span class="version-hint">?</span>
+      <div class="version-tooltip">
+        <strong>v0.2.2</strong>
+        Click any screen to solo it full-stage; click again to exit
+      </div>
+    </div>
   </div>
   <button class="btn btn-primary" id="loadBtn" onclick="document.getElementById('fileInput').click()">Load Video</button>
   <input type="file" id="fileInput" accept="video/*" style="display:none">
 </div>
 
 <div class="presets" id="presets"></div>
+
+<div class="info" style="padding: 2px 20px 6px; border-bottom: 1px solid var(--border);">
+  <span id="stageInfo"></span>
+  &nbsp;&middot;&nbsp;
+  <span class="status" id="statusText">No video loaded</span>
+</div>
 
 <div class="stage-wrap" id="stageWrap">
   <div class="arena-bg lights-on" id="arenaBg"></div>
@@ -555,6 +671,8 @@
   <div class="ramp-edge-left"></div>
   <div class="ramp-edge-right"></div>
   <div class="stage-apron"></div>
+  <button class="btn-fullscreen" id="fsBtn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+  <div class="solo-hint" id="soloHint" style="display:none">Click to exit solo</div>
   <div class="drop-zone" id="dropZone">
     <p class="main-text">Click here or drag a video file</p>
     <p class="sub-text">MP4, WebM, MOV</p>
@@ -580,18 +698,23 @@
 </div>
 
 <div class="controls" id="controls">
-  <button class="btn btn-pyro" onclick="firePyro()">Pyro Stage</button>
-  <button class="btn btn-pyro" onclick="firePyroRamp()">Pyro Ramp</button>
-  <button class="btn btn-toggle on" id="lightsBtn" onclick="toggleLights()">Lights On</button>
-  <button class="btn btn-toggle on-fog" id="fogBtn" onclick="toggleFog()">Fog On</button>
-  <button class="btn btn-toggle on" id="muteBtn" onclick="toggleMute()" style="background:rgba(80,200,120,0.1);border-color:rgba(80,200,120,0.3);color:#8f8">Audio On</button>
-  <button class="btn btn-toggle" id="vizBtn" onclick="toggleVisualizer()">Visualizer</button>
+  <button id="playBtn" class="btn btn-play" onclick="togglePlay()">No Video Loaded</button>
+  <span class="kbd-hint">Space: play/pause &nbsp;&nbsp; P: pyro stage &nbsp;&nbsp; R: pyro ramp &nbsp;&nbsp; F: fullscreen</span>
 </div>
 
-<div class="info">
-  <span id="stageInfo"></span><br>
-  <span class="status" id="statusText">No video loaded</span>
+<div class="controls" style="border-top: 1px solid var(--border); padding-top: 8px;">
+  <button class="btn btn-pyro" onclick="firePyro()">Pyro Stage</button>
+  <button class="btn btn-pyro" onclick="firePyroRamp()">Pyro Ramp</button>
 </div>
+
+<div class="controls" style="border-top: 1px solid var(--border); padding-top: 8px;">
+  <button class="btn btn-toggle on" id="lightsBtn" onclick="toggleLights()">Lights On</button>
+  <button class="btn btn-toggle on-fog" id="fogBtn" onclick="toggleFog()">Fog On</button>
+  <button class="btn btn-toggle" id="muteBtn" onclick="toggleMute()" style="background:rgba(80,200,120,0.1);border-color:rgba(80,200,120,0.3);color:#8f8">Audio On</button>
+  <button class="btn btn-toggle" id="vizBtn" onclick="toggleVisualizer()">Visualizer Off</button>
+</div>
+
+
 
 <script>
 const PRESETS = [
@@ -684,6 +807,7 @@ const PRESETS = [
 ];
 
 let currentPreset = 0;
+let renderedPreset = -1;
 let videoURL = null;
 let playing = false;
 let lightsOn = true;
@@ -691,6 +815,7 @@ let fogOn = true;
 let audioOn = true;
 let vizOn = false;
 let connectedVid = null;
+const sourcedElements = new WeakSet(); // tracks elements that have had createMediaElementSource called
 
 // --- PRESETS ---
 const presetsEl = document.getElementById("presets");
@@ -700,18 +825,25 @@ function renderPresets() {
     const btn = document.createElement("button");
     btn.className = "btn btn-preset" + (i === currentPreset ? " active" : "");
     btn.textContent = p.name;
-    btn.onclick = () => { currentPreset = i; renderPresets(); renderScreens(); updateInfo(); };
+    btn.onclick = () => {
+      currentPreset = i;
+      renderedPreset = -1; // force DOM rebuild on preset change
+      clearSolo();
+      renderPresets();
+      renderScreens();
+      updateInfo();
+    };
     presetsEl.appendChild(btn);
   });
 }
 
 // --- SCREENS ---
 const container = document.getElementById("screensContainer");
-function renderScreens() {
+
+function buildScreenDOM() {
   container.innerHTML = "";
   const preset = PRESETS[currentPreset];
   preset.screens.forEach((s) => {
-    // If framed, create an outer bezel wrapper
     let wrapper = null;
     if (s.frame) {
       wrapper = document.createElement("div");
@@ -726,16 +858,11 @@ function renderScreens() {
     }
 
     const div = document.createElement("div");
-    div.className = "screen" + (playing ? " playing" : "") + (s.frame ? " framed" : "");
-    
+    div.className = "screen" + (s.frame ? " framed" : "");
+    div.dataset.screenId = s.id;
+
     if (s.frame) {
-      // Inside the wrapper, screen fills it
-      div.style.cssText = `
-        position: relative;
-        width: 100%;
-        height: 100%;
-        border-radius: 2px;
-      `;
+      div.style.cssText = `position: relative; width: 100%; height: 100%; border-radius: 2px;`;
     } else {
       div.style.cssText = `
         left: ${s.x - s.w/2}%;
@@ -746,44 +873,162 @@ function renderScreens() {
       `;
     }
 
-    if (videoURL) {
-      const vid = document.createElement("video");
-      vid.src = videoURL;
-      vid.loop = true;
-      vid.muted = !(s.id === "main" && audioOn); // only main screen has audio when audioOn
-      vid.playsInline = true;
-      vid.autoplay = playing;
-      // Apply time offset for staggered screens
-      if (s.delay) {
-        vid.addEventListener("loadeddata", () => {
-          vid.currentTime = s.delay;
-        }, { once: true });
-      }
-      if (s.id === "main" && audioOn) {
-        vid.play().catch(() => {
-          vid.muted = true;
-          vid.play().catch(() => {});
-        });
-      } else if (playing) {
-        vid.play().catch(() => {});
-      }
-      div.appendChild(vid);
-    } else {
-      const label = document.createElement("div");
-      label.className = "screen-label" + (s.w > 20 ? " lg" : "");
-      label.textContent = s.label || "SCREEN";
-      div.appendChild(label);
-    }
-    
+    // Video element — always in DOM, hidden until src is set
+    const vid = document.createElement("video");
+    vid.loop = true;
+    vid.playsInline = true;
+    vid.muted = !(s.id === "main" && audioOn);
+    vid.dataset.screenId = s.id;
+    vid.dataset.delay = s.delay || 0;
+    vid.style.cssText = "width:100%;height:100%;object-fit:cover;display:none;";
+    div.appendChild(vid);
+
+    // Placeholder label — shown when no video is loaded
+    const label = document.createElement("div");
+    label.className = "screen-label" + (s.w > 20 ? " lg" : "");
+    label.textContent = s.label || "SCREEN";
+    label.dataset.placeholder = "true";
+    div.appendChild(label);
+
     if (wrapper) {
       wrapper.appendChild(div);
       container.appendChild(wrapper);
+      wrapper.addEventListener("click", () => toggleSolo(wrapper));
     } else {
       container.appendChild(div);
+      div.addEventListener("click", () => toggleSolo(div));
     }
   });
-  // Reconnect visualizer if active
+
+  renderedPreset = currentPreset;
+}
+
+// Called when a new video is loaded — updates src on existing elements, no DOM rebuild
+function attachVideos() {
+  if (renderedPreset !== currentPreset) buildScreenDOM();
+  const preset = PRESETS[currentPreset];
+
+  container.querySelectorAll("[data-placeholder]").forEach(l => l.style.display = "none");
+
+  container.querySelectorAll("video").forEach((vid) => {
+    const s = preset.screens.find(sc => sc.id === vid.dataset.screenId);
+    if (!s) return;
+    vid.style.display = "block";
+    if (vid.getAttribute("src") !== videoURL) {
+      vid.src = videoURL;
+    }
+    const delay = parseFloat(vid.dataset.delay) || 0;
+    if (delay) {
+      const applyDelay = () => { vid.currentTime = delay; };
+      // If already buffered (e.g. same URL reloaded), canplay won't fire — set immediately
+      if (vid.readyState >= 2) {
+        applyDelay();
+      } else {
+        vid.addEventListener("canplay", applyDelay, { once: true });
+      }
+    }
+  });
+
+  syncPlayback();
+  startDriftCorrection();
+}
+
+// Called for play/pause — operates on existing video elements, never touches DOM
+function syncPlayback() {
+  const preset = PRESETS[currentPreset];
+  container.querySelectorAll(".screen").forEach(div => {
+    div.classList.toggle("playing", playing && !!videoURL);
+  });
+  container.querySelectorAll("video").forEach((vid) => {
+    const s = preset.screens.find(sc => sc.id === vid.dataset.screenId);
+    if (!s) return;
+    vid.muted = !(s.id === "main" && audioOn);
+    if (playing && videoURL && vid.src) {
+      vid.play().catch(() => {});
+    } else {
+      vid.pause();
+    }
+  });
   if (vizOn && videoURL) setTimeout(connectAudio, 200);
+}
+
+// --- SOLO MODE ---
+let soloedEl = null;
+
+function toggleSolo(el) {
+  const hint = document.getElementById("soloHint");
+  if (soloedEl === el) {
+    // Exit solo
+    el.classList.remove("soloed");
+    soloedEl = null;
+    hint.style.display = "none";
+    // Restore cursor on all screens
+    container.querySelectorAll(".screen, .screen-frame-outer").forEach(s => {
+      s.style.cursor = "";
+    });
+  } else {
+    // Exit previous solo if any
+    if (soloedEl) soloedEl.classList.remove("soloed");
+    el.classList.add("soloed");
+    soloedEl = el;
+    hint.style.display = "block";
+  }
+}
+
+// Clear solo on preset change
+function clearSolo() {
+  if (soloedEl) {
+    soloedEl.classList.remove("soloed");
+    soloedEl = null;
+  }
+  const hint = document.getElementById("soloHint");
+  if (hint) hint.style.display = "none";
+}
+
+// --- DRIFT CORRECTION ---
+// Looped videos across multiple elements drift over time.
+// Every 2s while playing, check each screen's currentTime against where it
+// should be relative to main (mainTime + delay, mod duration) and nudge if off by >0.3s.
+let driftTimer = null;
+
+function startDriftCorrection() {
+  stopDriftCorrection();
+  driftTimer = setInterval(correctDrift, 2000);
+}
+
+function stopDriftCorrection() {
+  clearInterval(driftTimer);
+  driftTimer = null;
+}
+
+function correctDrift() {
+  if (!playing || !videoURL) return;
+  const mainVid = container.querySelector("video[data-screen-id='main']");
+  if (!mainVid || mainVid.paused || !mainVid.duration) return;
+
+  const mainTime = mainVid.currentTime;
+  const duration = mainVid.duration;
+
+  container.querySelectorAll("video").forEach((vid) => {
+    if (vid === mainVid) return;
+    const delay = parseFloat(vid.dataset.delay) || 0;
+    // Expected position: main + delay, wrapped to video duration
+    const expected = (mainTime + delay) % duration;
+    const actual = vid.currentTime;
+    // Wrap-aware diff: account for loop boundary
+    let diff = Math.abs(actual - expected);
+    if (diff > duration / 2) diff = duration - diff;
+    if (diff > 0.3) {
+      vid.currentTime = expected;
+    }
+  });
+}
+
+
+function renderScreens() {
+  if (renderedPreset !== currentPreset) buildScreenDOM();
+  if (videoURL) attachVideos();
+  updateInfo();
 }
 
 // --- FILE INPUT ---
@@ -799,11 +1044,10 @@ function loadVideo(file) {
   if (videoURL) URL.revokeObjectURL(videoURL);
   videoURL = URL.createObjectURL(file);
   playing = true;
-  connectedVid = null; // reset so visualizer reconnects
   loadBtn.textContent = "Change Video";
   dropZone.style.display = "none";
   setStatus(`Playing: ${file.name}`, true);
-  renderScreens();
+  attachVideos(); // update src on existing elements, no DOM rebuild
   updatePlayBtn();
 }
 
@@ -812,10 +1056,8 @@ fileInput.addEventListener("change", (e) => {
   fileInput.value = "";
 });
 
-// Drop zone click
 dropZone.addEventListener("click", () => fileInput.click());
 
-// Drag and drop on the whole stage
 stageWrap.addEventListener("dragover", (e) => {
   e.preventDefault();
   stageWrap.classList.add("drag-over");
@@ -832,52 +1074,52 @@ stageWrap.addEventListener("drop", (e) => {
 function togglePlay() {
   if (!videoURL) return;
   playing = !playing;
-  renderScreens();
+  syncPlayback();
+  if (playing) startDriftCorrection(); else stopDriftCorrection();
   updatePlayBtn();
   setStatus(playing ? "Playing" : "Paused", !!videoURL);
 }
 
 function updatePlayBtn() {
-  let btn = document.getElementById("playBtn");
+  const btn = document.getElementById("playBtn");
   if (!videoURL) {
-    if (btn) btn.remove();
-    return;
+    btn.disabled = true;
+    btn.className = "btn btn-play";
+    btn.textContent = "No Video Loaded";
+  } else {
+    btn.disabled = false;
+    btn.className = "btn btn-play" + (playing ? " active" : "");
+    btn.textContent = playing ? "Pause" : "Play Entrance";
   }
-  if (!btn) {
-    btn = document.createElement("button");
-    btn.id = "playBtn";
-    btn.onclick = togglePlay;
-    const controls = document.getElementById("controls");
-    controls.insertBefore(btn, controls.firstChild);
-  }
-  btn.className = "btn btn-play" + (playing ? " active" : "");
-  btn.textContent = playing ? "Pause" : "Play Entrance";
 }
 
 // --- PYRO ---
+let pyroStageTimer = null;
+let pyroRampTimer = null;
+
 function firePyro() {
   const cols = document.querySelectorAll(".pyro-col");
+  clearTimeout(pyroStageTimer);
   cols.forEach((col, i) => {
     col.classList.remove("fire");
     col.style.animationDelay = `${i * 0.1}s`;
     void col.offsetWidth;
     col.classList.add("fire");
   });
-  setTimeout(() => cols.forEach(c => c.classList.remove("fire")), 2500);
+  pyroStageTimer = setTimeout(() => cols.forEach(c => c.classList.remove("fire")), 2500);
 }
 
 function firePyroRamp() {
   const ramps = document.querySelectorAll(".pyro-ramp");
-  // Fire in pairs (left + right at same height), cascading down the ramp
+  clearTimeout(pyroRampTimer);
   ramps.forEach((r, i) => {
     r.classList.remove("fire");
-    // Pairs: 0&5, 1&6, 2&7, 3&8, 4&9 fire together
     const pairIndex = i % 5;
     r.style.animationDelay = `${pairIndex * 0.15}s`;
     void r.offsetWidth;
     r.classList.add("fire");
   });
-  setTimeout(() => ramps.forEach(r => r.classList.remove("fire")), 2500);
+  pyroRampTimer = setTimeout(() => ramps.forEach(r => r.classList.remove("fire")), 2500);
 }
 
 // --- LIGHTS ---
@@ -916,13 +1158,9 @@ function toggleMute() {
     btn.style.color = "rgba(255,255,255,0.3)";
     btn.textContent = "Audio Off";
   }
-  // Update existing video elements without full re-render
-  const vids = container.querySelectorAll("video");
-  const screens = PRESETS[currentPreset].screens;
-  vids.forEach((vid, i) => {
-    if (screens[i] && screens[i].id === "main") {
-      vid.muted = !audioOn;
-    }
+  // Use data attribute — no index assumption
+  container.querySelectorAll("video").forEach((vid) => {
+    vid.muted = !(vid.dataset.screenId === "main" && audioOn);
   });
 }
 
@@ -936,6 +1174,55 @@ function updateInfo() {
   const p = PRESETS[currentPreset];
   document.getElementById("stageInfo").textContent = `Stage: ${p.name} / ${p.screens.length} screens`;
 }
+
+// --- FULLSCREEN ---
+function toggleFullscreen() {
+  const el = document.getElementById("stageWrap");
+  const btn = document.getElementById("fsBtn");
+  if (!document.fullscreenElement) {
+    el.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+document.addEventListener("fullscreenchange", () => {
+  const btn = document.getElementById("fsBtn");
+  if (document.fullscreenElement) {
+    btn.textContent = "✕ Exit";
+    btn.style.opacity = "0";
+    // fade out after a moment so it's not always in the way
+    setTimeout(() => { btn.style.transition = "opacity 1s"; btn.style.opacity = "0.15"; }, 1500);
+  } else {
+    btn.style.transition = "opacity 0.2s";
+    btn.style.opacity = "1";
+    btn.textContent = "⛶ Fullscreen";
+  }
+});
+
+// Show fullscreen button on mouse move inside stage when fullscreen
+document.getElementById("stageWrap").addEventListener("mousemove", () => {
+  if (!document.fullscreenElement) return;
+  const btn = document.getElementById("fsBtn");
+  btn.style.transition = "opacity 0.2s";
+  btn.style.opacity = "1";
+  clearTimeout(btn._hideTimer);
+  btn._hideTimer = setTimeout(() => {
+    btn.style.transition = "opacity 1s";
+    btn.style.opacity = "0.15";
+  }, 2000);
+});
+
+// --- KEYBOARD SHORTCUTS ---
+document.addEventListener("keydown", (e) => {
+  if (e.target !== document.body) return;
+  switch (e.code) {
+    case "Space": e.preventDefault(); togglePlay(); break;
+    case "KeyP":  firePyro(); break;
+    case "KeyR":  firePyroRamp(); break;
+    case "KeyF":  toggleFullscreen(); break;
+  }
+});
 
 // --- INIT ---
 renderPresets();
@@ -959,29 +1246,28 @@ function toggleVisualizer() {
     btn.style.borderColor = "rgba(200,80,255,0.4)";
     btn.style.color = "#c8f";
     btn.textContent = "Visualizer On";
-    vizCanvas.classList.add("active");
+
     startVisualizer();
   } else {
     btn.className = "btn btn-toggle";
     btn.style.background = "";
     btn.style.borderColor = "";
     btn.style.color = "";
-    btn.textContent = "Visualizer";
+    btn.textContent = "Visualizer Off";
     vizCanvas.classList.remove("active");
     stopVisualizer();
   }
 }
 
 function connectAudio() {
-  // Find the main (unmuted) video
-  const vids = container.querySelectorAll("video");
-  const preset = PRESETS[currentPreset];
-  let mainVid = null;
-  vids.forEach((v, i) => {
-    if (preset.screens[i] && preset.screens[i].id === "main") mainVid = v;
-  });
-  if (!mainVid) mainVid = vids[0];
-  if (!mainVid || mainVid === connectedVid) return;
+  const mainVid = container.querySelector("video[data-screen-id='main']") || container.querySelector("video");
+  if (!mainVid) return;
+
+  // Element already sourced — connecting again would orphan the old node and break audio
+  if (sourcedElements.has(mainVid)) {
+    connectedVid = mainVid;
+    return;
+  }
 
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -994,9 +1280,10 @@ function connectAudio() {
   try {
     const source = audioCtx.createMediaElementSource(mainVid);
     source.connect(analyser);
+    sourcedElements.add(mainVid); // mark as sourced — never call createMediaElementSource on this element again
     connectedVid = mainVid;
   } catch(e) {
-    // Already connected or error
+    console.warn("Audio connect failed:", e);
   }
 }
 
@@ -1015,7 +1302,6 @@ function drawViz() {
   if (!vizOn) return;
   vizAnimId = requestAnimationFrame(drawViz);
 
-  // Resize canvas to actual pixel size
   const rect = vizCanvas.getBoundingClientRect();
   if (vizCanvas.width !== rect.width || vizCanvas.height !== rect.height) {
     vizCanvas.width = rect.width;
@@ -1032,7 +1318,6 @@ function drawViz() {
   const dataArray = new Uint8Array(bufLen);
   analyser.getByteFrequencyData(dataArray);
 
-  // Average energy for glow intensity
   let avg = 0;
   for (let i = 0; i < bufLen; i++) avg += dataArray[i];
   avg /= bufLen;
@@ -1041,19 +1326,17 @@ function drawViz() {
   const cx = W * 0.5;
   const cy = H * 0.5;
 
-  // --- Radial burst bars (mirrored for symmetry) ---
   const barCount = 80;
   const innerR = Math.min(W, H) * 0.05;
   const maxR = Math.max(W * 0.48, H * 0.48);
-  const usableBins = Math.floor(bufLen * 0.7); // skip empty high freqs
+  const usableBins = Math.floor(bufLen * 0.7);
   const halfBars = barCount / 2;
 
   for (let i = 0; i < barCount; i++) {
     const angle = (i / barCount) * Math.PI * 2 - Math.PI / 2;
-    // Mirror: first half maps forward, second half mirrors back
     const mirrorIdx = i < halfBars ? i : barCount - i;
     const freqIdx = Math.floor((mirrorIdx / halfBars) * usableBins);
-    const val = (dataArray[freqIdx] / 255) * 0.7; // 30% less intense
+    const val = (dataArray[freqIdx] / 255) * 0.7;
 
     const barLen = val * (maxR - innerR);
     const x1 = cx + Math.cos(angle) * innerR;
@@ -1061,7 +1344,6 @@ function drawViz() {
     const x2 = cx + Math.cos(angle) * (innerR + barLen);
     const y2 = cy + Math.sin(angle) * (innerR + barLen);
 
-    // Color: bass=magenta, mids=cyan, highs=blue
     const hue = 260 + (i / barCount) * 120;
     vizCtx.strokeStyle = `hsla(${hue}, 80%, 60%, ${0.2 + val * 0.35})`;
     vizCtx.lineWidth = Math.max(2, (W / barCount) * 0.6);
@@ -1071,7 +1353,6 @@ function drawViz() {
     vizCtx.stroke();
   }
 
-  // --- Center glow pulse ---
   const glowR = innerR + energy * maxR * 0.3;
   const grd = vizCtx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
   grd.addColorStop(0, `rgba(180, 100, 255, ${energy * 0.15})`);
@@ -1080,7 +1361,6 @@ function drawViz() {
   vizCtx.fillStyle = grd;
   vizCtx.fillRect(0, 0, W, H);
 
-  // --- Waveform ring ---
   const waveData = new Uint8Array(bufLen);
   analyser.getByteTimeDomainData(waveData);
   const waveR = innerR * 1.5 + energy * 20;
