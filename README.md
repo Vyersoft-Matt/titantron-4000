@@ -36,4 +36,4 @@ When making any update:
 | v0.1.9 | UI: Visualizer button now shows On/Off consistent with other toggles |
 | v0.2.0 | Feature: Fullscreen button on stage; fades out when idle; F key shortcut |
 | v0.2.1 | Bug #7: Drift correction loop — non-main screens resync to main every 2s, wrap-aware |
-| v0.2.2 | Feature #8: Click any screen to solo full-stage; click again or switch preset to exit |
+| v0.2.2 | Feature #8/#9: Click any screen to solo full-stage; fade transition between presets |
