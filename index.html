@@ -671,11 +671,11 @@
   <div>
     <h1>TITANTRON 4000</h1>
     <div class="version-wrap">
-      <p class="subtitle">by SOL &nbsp;&middot;&nbsp; v0.2.2</p>
+      <p class="subtitle">by SOL &nbsp;&middot;&nbsp; v0.2.3</p>
       <span class="version-hint">?</span>
       <div class="version-tooltip">
-        <strong>v0.2.2</strong>
-        Click any screen to solo it full-stage; click again to exit
+        <strong>v0.2.3</strong>
+        5 new layouts: Cinematic, Diamond, Throwback, Cascade, Suplex City
       </div>
     </div>
   </div>
@@ -841,6 +841,46 @@ const PRESETS = [
       { id: "g7", x: 37.5, y: 38, w: 12.5, h: 14, label: "", delay: 18, z: 8 },
       { id: "g8", x: 50,   y: 38, w: 12.5, h: 14, label: "", delay: 21, z: 8 },
       { id: "g9", x: 62.5, y: 38, w: 12.5, h: 14, label: "", delay: 24, z: 8 },
+    ],
+  },
+  {
+    // Cinematic: ultra-wide banner, two screens centered on trusses below
+    name: "Cinematic",
+    screens: [
+      { id: "main",  x: 50, y: 18, w: 72, h: 22, label: "Main", z: 8, frame: true },
+      { id: "left",  x: 29, y: 42, w: 20, h: 26, label: "Left",  z: 8, delay: 5 },
+      { id: "right", x: 71, y: 42, w: 20, h: 26, label: "Right", z: 8, delay: 5 },
+    ],
+  },
+  {
+    // Diamond: plus pattern, left/right aligned to trusses
+    name: "Diamond",
+    screens: [
+      { id: "top",   x: 50, y: 8,  w: 20, h: 14, label: "", z: 8, delay: 0 },
+      { id: "left",  x: 29, y: 26, w: 20, h: 14, label: "", z: 8, delay: 2 },
+      { id: "main",  x: 50, y: 26, w: 20, h: 14, label: "", z: 9, delay: 4 },
+      { id: "right", x: 71, y: 26, w: 20, h: 14, label: "", z: 8, delay: 6 },
+      { id: "bot",   x: 50, y: 44, w: 20, h: 14, label: "", z: 8, delay: 8 },
+    ],
+  },
+  {
+    // Cascade: diagonal stagger anchored to trusses on left and right
+    name: "Cascade",
+    screens: [
+      { id: "s1",   x: 29, y: 10, w: 20, h: 14, label: "", z: 8, delay: 0 },
+      { id: "s2",   x: 38, y: 22, w: 20, h: 14, label: "", z: 8, delay: 4 },
+      { id: "main", x: 50, y: 30, w: 20, h: 14, label: "", z: 9, delay: 8 },
+      { id: "s4",   x: 62, y: 22, w: 20, h: 14, label: "", z: 8, delay: 12 },
+      { id: "s5",   x: 71, y: 10, w: 20, h: 14, label: "", z: 8, delay: 16 },
+    ],
+  },
+  {
+    // Suplex City: two stacked wide screens on left, one giant on right
+    name: "Suplex City",
+    screens: [
+      { id: "t1",   x: 25, y: 12, w: 34, h: 18, label: "", z: 8, delay: 0 },
+      { id: "t2",   x: 25, y: 32, w: 34, h: 18, label: "", z: 8, delay: 6 },
+      { id: "main", x: 72, y: 22, w: 34, h: 36, label: "", z: 9, frame: true },
     ],
   },
 ];
