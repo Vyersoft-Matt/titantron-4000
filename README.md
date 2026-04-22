@@ -3,7 +3,7 @@
 A wrestling entrance titantron simulator. Load a video, pick a screen layout, fire pyro.
 
 ## Current Version
-**v0.2.4**
+**v0.2.9**
 
 ---
 
@@ -38,4 +38,4 @@ When making any update:
 | v0.2.1 | Bug #7: Drift correction loop — non-main screens resync to main every 2s, wrap-aware |
 | v0.2.2 | Feature #8/#9: Click any screen to solo full-stage; fade transition between presets |
 | v0.2.3 | Feature: 5 new layouts — Cinematic, Diamond, Throwback, Cascade, Suplex City |
-| v0.2.4 | Layout: Removed Throwback (duplicate of Classic); Cinematic screens repositioned to stay in bounds; Diamond + Cascade aligned to trusses |
+| v0.2.9 | Layout: Removed Throwback (duplicate of Classic); Cinematic screens repositioned to stay in bounds; Diamond + Cascade aligned to trusses |
