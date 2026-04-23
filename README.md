@@ -7,7 +7,7 @@ A wrestling entrance titantron simulator. Load any video, pick a screen layout, 
 ---
 
 ## Current Version
-**v0.3.6**
+**v0.4.1**
 
 ---
 
@@ -85,4 +85,9 @@ When making any update:
 | v0.3.3 | Bug fix: viz canvas z-index raised above screensContainer |
 | v0.3.4 | Bug fix: visualizer .active class was missing; AudioContext resume added |
 | v0.3.5 | Viz canvas moved behind screens (z:5) |
-| v0.3.6 | Renamed to Titantron.xyz; Discord link added to header |
+| v0.4.1 | Renamed to Titantron.xyz; Discord link added to header |
+| v0.4.1 | Feature: Wrestler name overlay — main + subtitle with 4 bg styles (Bars, Fire, Spotlight, Chrome) |
+| v0.4.1 | UI: Name Bar toggle on far left with On/Off label; color picker moved next to Lights button |
+| v0.4.1 | UI: Inputs renamed Title/Subtitle; each name bar style now has dramatically different font, size, and spacing |
+| v0.4.1 | UI: Pyro buttons merged into play bar with label; separate pyro bar removed |
+| v0.4.1 | Feature: Sparkler shower — golden particle cascade from top of stage with trail, glow, gravity; S key shortcut |
