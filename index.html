@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Titantron.xyz</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Bebas+Neue&family=Bungee&family=Orbitron:wght@700;900&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -752,7 +752,211 @@
     transition: opacity 0.4s;
   }
   #vizCanvas.active { opacity: 1; }
-</style>
+
+  /* NAME OVERLAY */
+  .name-overlay {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 18%;
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    padding: 0 5%;
+  }
+  .name-overlay.visible { opacity: 1; }
+
+  .name-overlay .name-main {
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+  }
+  .name-overlay .name-sub {
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 6px;
+    width: 100%;
+  }
+
+  /* BG STYLES */
+  .name-overlay.bg-bars {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0,0,0,0.85) 15%,
+      rgba(0,0,0,0.92) 50%,
+      rgba(0,0,0,0.85) 85%,
+      transparent 100%
+    );
+    padding: 18px 5%;
+  }
+  .name-overlay.bg-bars .name-main {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 8vw, 90px);
+    letter-spacing: 8px;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(255,255,255,0.3);
+  }
+  .name-overlay.bg-bars .name-sub {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(11px, 1.6vw, 18px);
+    letter-spacing: 6px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .name-overlay.bg-fire {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(120,40,0,0.7) 10%,
+      rgba(180,60,0,0.85) 40%,
+      rgba(180,60,0,0.85) 60%,
+      rgba(120,40,0,0.7) 90%,
+      transparent 100%
+    );
+    padding: 14px 5%;
+  }
+  .name-overlay.bg-fire .name-main {
+    font-family: 'Bungee', sans-serif;
+    font-size: clamp(32px, 6.5vw, 78px);
+    letter-spacing: 2px;
+    color: #ffe066;
+    text-shadow: 0 0 20px #ff8800, 0 0 60px #ff4400, 0 3px 0 rgba(0,0,0,0.6);
+    line-height: 0.95;
+  }
+  .name-overlay.bg-fire .name-sub {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(12px, 1.8vw, 20px);
+    letter-spacing: 4px;
+    font-weight: 700;
+    color: rgba(255,200,80,0.8);
+    text-shadow: 0 0 10px #ff6600;
+    margin-top: 8px;
+  }
+
+  .name-overlay.bg-spotlight {
+    background: radial-gradient(ellipse 70% 100% at 50% 50%, rgba(0,0,0,0.88) 0%, transparent 80%);
+    padding: 26px 5%;
+  }
+  .name-overlay.bg-spotlight .name-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 64px);
+    letter-spacing: 10px;
+    font-weight: 900;
+    font-style: italic;
+    color: #fff;
+    text-shadow: 0 0 40px hsla(var(--ah),var(--as),var(--al),0.9), 0 0 80px hsla(var(--ah),var(--as),var(--al),0.5);
+  }
+  .name-overlay.bg-spotlight .name-sub {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(10px, 1.4vw, 16px);
+    letter-spacing: 10px;
+    font-weight: 300;
+    color: hsla(var(--ah),var(--as),80%,0.7);
+    margin-top: 10px;
+  }
+
+  .name-overlay.bg-chrome {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(10,10,20,0.7) 10%,
+      rgba(20,20,40,0.88) 40%,
+      rgba(20,20,40,0.88) 60%,
+      rgba(10,10,20,0.7) 90%,
+      transparent 100%
+    );
+    padding: 20px 5%;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .name-overlay.bg-chrome .name-main {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(20px, 4vw, 52px);
+    letter-spacing: 12px;
+    font-weight: 900;
+    background: linear-gradient(180deg, #fff 0%, #aaa 50%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 12px rgba(255,255,255,0.4));
+  }
+  .name-overlay.bg-chrome .name-sub {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(9px, 1.2vw, 13px);
+    letter-spacing: 8px;
+    font-weight: 700;
+    color: rgba(180,200,255,0.5);
+    margin-top: 8px;
+  }
+
+  /* NAME CONTROLS */
+  .name-controls {
+    padding: 8px 20px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .name-input {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 3px;
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .name-input::placeholder { color: rgba(255,255,255,0.2); text-transform: uppercase; }
+  .name-input:focus { border-color: var(--accent-dim); }
+  .name-input.wide { width: 160px; }
+  .name-input.narrow { width: 110px; }
+  .btn-bg {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.35);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-bg.active {
+    background: rgba(100,170,255,0.12);
+    border-color: var(--accent-dim);
+    color: #8cf;
+  }
+  .btn-show {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.3);
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-show.active {
+    background: rgba(255,220,80,0.12);
+    border-color: rgba(255,220,80,0.35);
+    color: #ffd;
+  }</style>
 </head>
 <body>
 
@@ -765,12 +969,12 @@
         <a href="https://discord.gg/rURA6bTrWm" target="_blank" title="Join the Discord" style="display:inline-flex;align-items:center;vertical-align:middle;opacity:0.45;transition:opacity 0.2s;text-decoration:none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.45'">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="#8cf"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
         </a>
-        &nbsp;&middot;&nbsp; v0.3.6
+        &nbsp;&middot;&nbsp; v0.4.1
       </p>
       <span class="version-hint">?</span>
       <div class="version-tooltip">
-        <strong>v0.3.6</strong>
-        Renamed to Titantron.xyz; Discord link added
+        <strong>v0.4.1</strong>
+        UI: Name Bar toggle moved to far left, renamed On/Off; color picker moved next to Lights
       </div>
     </div>
   </div>
@@ -812,6 +1016,11 @@
   <div class="ramp-edge-left"></div>
   <div class="ramp-edge-right"></div>
   <div class="stage-apron"></div>
+  <canvas id="sparklerCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:22;pointer-events:none;"></canvas>
+  <div class="name-overlay bg-bars" id="nameOverlay">
+    <div class="name-main" id="nameMain">YOUR NAME</div>
+    <div class="name-sub" id="nameSub">ENTRANCE THEME</div>
+  </div>
   <button class="btn-fullscreen" id="fsBtn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
   <div class="solo-hint" id="soloHint" style="display:none">Click to exit solo</div>
   <div class="drop-zone" id="dropZone">
@@ -840,27 +1049,36 @@
 
 <div class="controls" id="controls">
   <button id="playBtn" class="btn btn-play" onclick="togglePlay()">No Video Loaded</button>
-  <span class="kbd-hint">Space: play/pause &nbsp;&nbsp; P: pyro stage &nbsp;&nbsp; R: pyro ramp &nbsp;&nbsp; F: fullscreen</span>
-</div>
-
-<div class="controls" style="border-top: 1px solid var(--border); padding-top: 8px;">
-  <button class="btn btn-pyro" onclick="firePyro()">Pyro Stage</button>
-  <button class="btn btn-pyro" onclick="firePyroRamp()">Pyro Ramp</button>
+  <span style="color:rgba(255,255,255,0.12);font-size:11px;letter-spacing:1px;font-family:'Oswald',sans-serif;align-self:center;margin:0 4px;">|</span>
+  <span style="color:rgba(255,255,255,0.25);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:'Oswald',sans-serif;align-self:center;">Pyro:</span>
+  <button class="btn btn-pyro" onclick="firePyro()">Stage</button>
+  <button class="btn btn-pyro" onclick="firePyroRamp()">Ramp</button>
+  <button class="btn btn-pyro" onclick="fireSparklerShower()" style="background:rgba(255,220,80,0.1);border-color:rgba(255,220,80,0.3);color:#ffd060;">Shower</button>
+  <span class="kbd-hint">Space: play/pause &nbsp;&nbsp; P: pyro stage &nbsp;&nbsp; R: pyro ramp &nbsp;&nbsp; S: shower &nbsp;&nbsp; F: fullscreen</span>
 </div>
 
 <div class="controls" style="border-top: 1px solid var(--border); padding-top: 8px;">
   <button class="btn btn-toggle on" id="lightsBtn" onclick="toggleLights()">Lights On</button>
-  <button class="btn btn-toggle on-fog" id="fogBtn" onclick="toggleFog()">Fog On</button>
-  <button class="btn btn-toggle" id="muteBtn" onclick="toggleMute()" style="background:rgba(80,200,120,0.1);border-color:rgba(80,200,120,0.3);color:#8f8">Audio On</button>
-  <button class="btn btn-toggle" id="vizBtn" onclick="toggleVisualizer()">Visualizer Off</button>
-  <label style="display:flex;align-items:center;gap:6px;margin-left:6px;cursor:pointer;">
-    <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);font-family:'Oswald',sans-serif;">Color</span>
+  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
     <input type="color" id="arenaColor" value="#66aaff"
       style="width:28px;height:24px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;background:none;cursor:pointer;padding:2px;">
   </label>
+  <button class="btn btn-toggle on-fog" id="fogBtn" onclick="toggleFog()">Fog On</button>
+  <button class="btn btn-toggle" id="muteBtn" onclick="toggleMute()" style="background:rgba(80,200,120,0.1);border-color:rgba(80,200,120,0.3);color:#8f8">Audio On</button>
+  <button class="btn btn-toggle" id="vizBtn" onclick="toggleVisualizer()">Visualizer Off</button>
 </div>
 
 
+
+<div class="name-controls">
+  <button class="btn-show" id="nameShowBtn" onclick="toggleNameOverlay()">Name Bar Off</button>
+  <input class="name-input wide" id="nameInputMain" type="text" placeholder="Title" maxlength="30" oninput="updateNameOverlay()">
+  <input class="name-input narrow" id="nameInputSub" type="text" placeholder="Subtitle" maxlength="40" oninput="updateNameOverlay()">
+  <button class="btn-bg active" id="bgBars"      onclick="setNameBg('bars')">Bars</button>
+  <button class="btn-bg"        id="bgFire"      onclick="setNameBg('fire')">Fire</button>
+  <button class="btn-bg"        id="bgSpotlight" onclick="setNameBg('spotlight')">Spotlight</button>
+  <button class="btn-bg"        id="bgChrome"    onclick="setNameBg('chrome')">Chrome</button>
+</div>
 
 <script>
 const PRESETS = [
@@ -1462,6 +1680,7 @@ document.addEventListener("keydown", (e) => {
     case "Space": e.preventDefault(); togglePlay(); break;
     case "KeyP":  firePyro(); break;
     case "KeyR":  firePyroRamp(); break;
+    case "KeyS":  fireSparklerShower(); break;
     case "KeyF":  toggleFullscreen(); break;
   }
 });
@@ -1471,6 +1690,169 @@ renderPresets();
 renderScreens();
 updateInfo();
 updatePlayBtn();
+
+// --- SPARKLER SHOWER ---
+let sparklerAnimId = null;
+let sparklerParticles = [];
+let sparklerEmitting = false;
+let sparklerEmitTimer = null;
+
+function fireSparklerShower() {
+  const canvas = document.getElementById("sparklerCanvas");
+  const stage = document.getElementById("stageWrap");
+  canvas.width = stage.offsetWidth;
+  canvas.height = stage.offsetHeight;
+
+  sparklerParticles = [];
+  sparklerEmitting = true;
+
+  // Emit for 2.5s then let particles fall out
+  clearTimeout(sparklerEmitTimer);
+  sparklerEmitTimer = setTimeout(() => { sparklerEmitting = false; }, 2500);
+
+  if (!sparklerAnimId) drawSparkler();
+}
+
+function spawnSparkle(canvas) {
+  // Spawn across the top ~60% width, centered on gorilla (50%)
+  const spread = 0.55;
+  const x = (0.5 - spread/2 + Math.random() * spread) * canvas.width;
+  const y = (Math.random() * 0.08) * canvas.height; // top 8%
+
+  const angle = (Math.PI * 0.3) + Math.random() * (Math.PI * 0.4); // downward spread
+  const speed = 1.5 + Math.random() * 3.5;
+
+  sparklerParticles.push({
+    x, y,
+    vx: Math.cos(angle) * speed * (Math.random() > 0.5 ? 1 : -1),
+    vy: Math.sin(angle) * speed,
+    life: 1.0,
+    decay: 0.008 + Math.random() * 0.012,
+    size: 1.5 + Math.random() * 2.5,
+    // Color: gold to white shimmer
+    hue: 35 + Math.random() * 25,
+    bright: 70 + Math.random() * 30,
+    trail: [],
+  });
+}
+
+function drawSparkler() {
+  const canvas = document.getElementById("sparklerCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height;
+
+  // Resize if stage resized
+  const stage = document.getElementById("stageWrap");
+  if (canvas.width !== stage.offsetWidth || canvas.height !== stage.offsetHeight) {
+    canvas.width = stage.offsetWidth;
+    canvas.height = stage.offsetHeight;
+  }
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Spawn new particles while emitting
+  if (sparklerEmitting) {
+    const count = 4 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < count; i++) spawnSparkle(canvas);
+  }
+
+  // Update and draw particles
+  sparklerParticles = sparklerParticles.filter(p => p.life > 0);
+
+  for (const p of sparklerParticles) {
+    // Store trail
+    p.trail.push({ x: p.x, y: p.y });
+    if (p.trail.length > 6) p.trail.shift();
+
+    // Physics
+    p.vy += 0.12; // gravity
+    p.vx *= 0.995; // slight air resistance
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life -= p.decay;
+
+    const alpha = Math.max(0, p.life);
+
+    // Draw trail
+    if (p.trail.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(p.trail[0].x, p.trail[0].y);
+      for (let i = 1; i < p.trail.length; i++) ctx.lineTo(p.trail[i].x, p.trail[i].y);
+      ctx.strokeStyle = `hsla(${p.hue}, 100%, ${p.bright}%, ${alpha * 0.3})`;
+      ctx.lineWidth = p.size * 0.5;
+      ctx.stroke();
+    }
+
+    // Draw sparkle core
+    const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
+    grd.addColorStop(0, `hsla(${p.hue}, 100%, 100%, ${alpha})`);
+    grd.addColorStop(0.4, `hsla(${p.hue}, 100%, ${p.bright}%, ${alpha * 0.8})`);
+    grd.addColorStop(1, `hsla(${p.hue}, 100%, ${p.bright}%, 0)`);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+
+    // Shimmer cross/star shape on bright ones
+    if (p.size > 2.5 && alpha > 0.5) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.strokeStyle = `hsla(${p.hue}, 80%, 95%, ${alpha * 0.6})`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(-p.size * 3, 0); ctx.lineTo(p.size * 3, 0);
+      ctx.moveTo(0, -p.size * 3); ctx.lineTo(0, p.size * 3);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  if (sparklerParticles.length > 0 || sparklerEmitting) {
+    sparklerAnimId = requestAnimationFrame(drawSparkler);
+  } else {
+    sparklerAnimId = null;
+    ctx.clearRect(0, 0, W, H);
+  }
+}
+
+// --- NAME OVERLAY ---
+let nameVisible = false;
+let nameBg = 'bars';
+
+function updateNameOverlay() {
+  const main = document.getElementById("nameInputMain").value.trim();
+  const sub  = document.getElementById("nameInputSub").value.trim();
+  document.getElementById("nameMain").textContent = main || "YOUR NAME HERE";
+  const subEl = document.getElementById("nameSub");
+  if (sub) {
+    subEl.textContent = sub;
+    subEl.style.display = "block";
+  } else {
+    subEl.style.display = "none";
+  }
+}
+
+function setNameBg(bg) {
+  nameBg = bg;
+  const overlay = document.getElementById("nameOverlay");
+  overlay.className = "name-overlay" + (nameVisible ? " visible" : "") + " bg-" + bg;
+  ["Bars","Fire","Spotlight","Chrome"].forEach(b => {
+    document.getElementById("bg" + b).classList.toggle("active", b.toLowerCase() === bg);
+  });
+}
+
+function toggleNameOverlay() {
+  nameVisible = !nameVisible;
+  const overlay = document.getElementById("nameOverlay");
+  overlay.classList.toggle("visible", nameVisible);
+  const btn = document.getElementById("nameShowBtn");
+  btn.classList.toggle("active", nameVisible);
+  btn.textContent = nameVisible ? "Name Bar On" : "Name Bar Off";
+}
+
+// Hide sub line initially since placeholder handles it
+document.getElementById("nameSub").style.display = "none";
 
 // --- VISUALIZER ---
 let audioCtx = null;
